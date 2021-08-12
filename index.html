@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,initial-scale=1.0">
+    <title>Image sprite Animation</title>
+</head>
+<body>
+    <canvas id='canvas'></canvas>
+
+    <!--<button type="button" id="Run" onclick="run();">Run</button>-->
+
+
+
+    <!--********* Javascript code *************-->
+    <script>
+        var canvasWidth = window.innerWidth;      //canvas width
+        var canvasHeight = window.innerHeight;     //canvas height
+
+        var x=0;
+        var y=0;
+
+        var srcX;
+        var srcy;
+
+        var sheetWidth = 864;           //width of sprite image
+        var sheetHeight = 280;          //height of sprite image
+
+        var cols = 8;                   //number of columns
+        var rows = 2;                   //number of rows
+
+        var width = sheetWidth / cols;      //width of 1 image section out of sprite image
+        var height = sheetHeight / rows;    //height of 1 image section out of sprite image
+
+        var currentFrame = 0;
+
+        //image source & setting width & height for canvas
+
+        var character = new Image();
+        character.src = "sprite-image-new.png"; 
+
+        var canvas = document.getElementById('canvas');     //getting canvas and applying width & height to it
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        var ctx = canvas.getContext('2d');
+
+
+
+        function updateFrame(){
+            ctx.clearRect(x,y,width,height);
+
+            currentFrame = ++currentFrame % cols;
+            srcX = currentFrame * width;
+            srcY = 0;
+
+            x+=8;           //moving effect created by increasing pixels in x-axis
+
+            //for clearing previous images & avoid overlapping
+            /*ctx.clearRect(x,y,width,height);*/
+        }
+
+        //applying property values to sprite image
+        function drawImage(){
+            updateFrame();
+            ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
+        }
+
+        //Calling multiple times
+        setInterval(function(){
+            drawImage();
+        },100);
+
+    </script>
+</body>
+</html>
